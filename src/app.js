@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 const redisClient = redis.createClient({
     url: process.env.REDIS_URL
 });
+const validateMovie = require('./middleware/validateMovie');
 
 (async () => {
     await redisClient.connect().catch(console.error);
@@ -47,6 +48,10 @@ app.get('/test-redis', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
+});
+
+app.post('/test-validation', validateMovie, (req, res) => {
+    res.json({ message: 'Validation passed!', data: req.body });
 });
 
 
