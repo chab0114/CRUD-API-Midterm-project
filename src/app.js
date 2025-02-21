@@ -10,6 +10,7 @@ const redisClient = redis.createClient({
 });
 const validateMovie = require('./middleware/validateMovie');
 const cacheMiddleware = require('./middleware/cacheMiddleware');
+const movieRoutes = require('./routes/movieRoutes');
 
 (async () => {
     await redisClient.connect().catch(console.error);
@@ -23,6 +24,8 @@ app.use((req, res, next) => {
     req.redisClient = redisClient;
     next()
 });
+
+app.use('/api/movies', movieRoutes);
 
 app.get('/', (req, res) => {
     res.send('Movie Tracker API is running');
